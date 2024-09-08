@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editable Resume</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+        .resume-section {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            cursor: pointer;
+        }
+        .resume-section:focus {
+            background-color: #e9f9f9;
+            outline: none;
+        }
+        button {
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Editable Resume</h2>
+        <div id="resume">
+            <div class="resume-section" id="name" tabindex="0">John Doe</div>
+            <div class="resume-section" id="contact" tabindex="0">johndoe@gmail.com | 123-456-7890</div>
+            <div class="resume-section" id="objective" tabindex="0">
+                To secure a challenging position in a reputable organization to expand my learnings, knowledge, and skills.
+            </div>
+            <h4>Education</h4>
+            <ul id="education">
+                <li tabindex="0">B.Sc. in Computer Science from University XYZ (2023)</li>
+            </ul>
+            <h4>Experience</h4>
+            <ul id="experience">
+                <li tabindex="0">Software Developer at ABC Company (2021-2023)</li>
+            </ul>
+            <h4>Skills</h4>
+            <ul id="skills">
+                <li tabindex="0">JavaScript</li>
+                <li tabindex="0">TypeScript</li>
+                <li tabindex="0">React</li>
+            </ul>
+            <button id="saveButton">Save Resume</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to make sections editable
+        function makeSectionsEditable() {
+            const resumeSections = document.querySelectorAll(".resume-section, #education li, #experience li, #skills li");
+
+            resumeSections.forEach(section => {
+                section.addEventListener("click", () => {
+                    section.setAttribute("contenteditable", "true");
+                    section.focus();
+                });
+
+                section.addEventListener("blur", () => {
+                    section.removeAttribute("contenteditable");
+                });
+            });
+        }
+
+        // Function to save resume data
+        function saveResume() {
+            const resumeData = {
+                name: document.getElementById('name').textContent || '',
+                contact: document.getElementById('contact').textContent || '',
+                objective: document.getElementById('objective').textContent || '',
+                education: Array.from(document.querySelectorAll('#education li')).map(item => item.textContent || ''),
+                experience: Array.from(document.querySelectorAll('#experience li')).map(item => item.textContent || ''),
+                skills: Array.from(document.querySelectorAll('#skills li')).map(item => item.textContent || '')
+            };
+
+            // Implement actual save logic here (e.g., saving to local storage or server)
+            console.log('Resume data saved:', resumeData);
+
+            alert("Resume saved!");
+        }
+
+        // Initialize the functionality when DOM is loaded
+        document.addEventListener("DOMContentLoaded", () => {
+            makeSectionsEditable();
+
+            document.getElementById('saveButton').addEventListener('click', saveResume);
+        });
+    </script>
+</body>
+</html>
