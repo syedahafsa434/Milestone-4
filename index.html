@@ -1,109 +1,304 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editable Resume</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        .container {
-            max-width: 900px;
-            margin: auto;
-        }
-        .resume-section {
-            margin-bottom: 20px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            background-color: #f9f9f9;
-            cursor: pointer;
-        }
-        .resume-section:focus {
-            background-color: #e9f9f9;
-            outline: none;
-        }
-        button {
-            padding: 10px;
-            margin-top: 20px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editable Resume Builder</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h2>Editable Resume</h2>
-        <div id="resume">
-            <div class="resume-section" id="name" tabindex="0">John Doe</div>
-            <div class="resume-section" id="contact" tabindex="0">johndoe@gmail.com | 123-456-7890</div>
-            <div class="resume-section" id="objective" tabindex="0">
-                To secure a challenging position in a reputable organization to expand my learnings, knowledge, and skills.
-            </div>
-            <h4>Education</h4>
-            <ul id="education">
-                <li tabindex="0">B.Sc. in Computer Science from University XYZ (2023)</li>
-            </ul>
-            <h4>Experience</h4>
-            <ul id="experience">
-                <li tabindex="0">Software Developer at ABC Company (2021-2023)</li>
-            </ul>
-            <h4>Skills</h4>
-            <ul id="skills">
-                <li tabindex="0">JavaScript</li>
-                <li tabindex="0">TypeScript</li>
-                <li tabindex="0">React</li>
-            </ul>
-            <button id="saveButton">Save Resume</button>
-        </div>
+    <style>/* General reset and styles */
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+        
+        body {
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          background: linear-gradient(135deg, #d49bf8 0%, #60cff8 100%);
+          padding: 20px;
+          color: #333;
+        }
+        
+        /* Resume Builder Container */
+        .resume-builder {
+          max-width: 800px;
+          margin: 0 auto;
+          background-color: #ffffff;
+          padding: 25px;
+          border-radius: 15px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Headings */
+        h1, h2 {
+          text-align: center;
+          color: #4a4a4a;
+          margin-bottom: 20px;
+        }
+        
+        h2 {
+          color: #009688;
+        }
+        
+        h3 {
+          color: #007bff;
+        }
+        
+        /* Input section */
+        .input-section {
+          margin-bottom: 20px;
+        }
+        
+        .input-section label {
+          display: block;
+          font-weight: bold;
+          color: #333;
+          margin-bottom: 8px;
+        }
+        
+        .input-section input,
+        .input-section textarea {
+          width: 100%;
+          padding: 12px;
+          font-size: 1em;
+          border: 2px solid #ddd;
+          border-radius: 8px;
+          transition: border-color 0.3s ease;
+          outline: none;
+        }
+        
+        .input-section input:focus,
+        .input-section textarea:focus {
+          border-color: #007bff;
+        }
+        
+        /* Button styling */
+        button {
+          display: block;
+          width: 100%;
+          padding: 15px;
+          background: linear-gradient(135deg, #007bff 0%, #00c6ff 100%);
+          color: #fff;
+          font-size: 1.1em;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+          margin-bottom: 40px;
+        }
+        
+        button:hover {
+          background: linear-gradient(135deg, #0062cc 0%, #00b3e6 100%);
+        }
+        
+        /* Resume display styling */
+        .resume-display {
+          background-color: #b4edfc;
+          padding: 25px;
+          border-radius: 12px;
+          border: 1px solid #ddd;
+          color: #4a4a4a;
+        }
+        
+        .resume-display h3 {
+          font-size: 1.8em;
+          margin-bottom: 10px;
+        }
+        
+        .resume-display section {
+          margin-bottom: 20px;
+        }
+        
+        .resume-display section h4 {
+          font-size: 1.4em;
+          color: #009688;
+          margin-bottom: 10px;
+        }
+        
+        .resume-display section p {
+          font-size: 1.1em;
+          color: #555;
+        }
+        
+        /* Media Query for smaller screens */
+        @media (max-width: 768px) {
+          .resume-builder {
+            padding: 15px;
+          }
+        
+          button {
+            padding: 10px;
+          }
+        
+          .resume-display {
+            padding: 15px;
+          }
+        }
+        </style>
+  <div class="resume-builder">
+    <h1>Edit Your Resume</h1>
+
+    <div class="input-section">
+      <label for="nameInput">Name</label>
+      <input type="text" id="nameInput" placeholder="Your Name">
     </div>
 
-    <script>
-        // Function to make sections editable
-        function makeSectionsEditable() {
-            const resumeSections = document.querySelectorAll(".resume-section, #education li, #experience li, #skills li");
+    <div class="input-section">
+      <label for="contactInput">Contact Information</label>
+      <input type="text" id="contactInput" placeholder="Your Address | Phone Number | Email">
+    </div>
 
-            resumeSections.forEach(section => {
-                section.addEventListener("click", () => {
-                    section.setAttribute("contenteditable", "true");
-                    section.focus();
-                });
+    <div class="input-section">
+      <label for="summaryInput">Professional Summary</label>
+      <textarea id="summaryInput" rows="4" placeholder="Write a short summary about yourself"></textarea>
+    </div>
 
-                section.addEventListener("blur", () => {
-                    section.removeAttribute("contenteditable");
-                });
-            });
-        }
+    <div class="input-section">
+      <label for="experienceInput">Professional Experience</label>
+      <textarea id="experienceInput" rows="4" placeholder="List your professional experiences"></textarea>
+    </div>
 
-        // Function to save resume data
-        function saveResume() {
-            const resumeData = {
-                name: document.getElementById('name').textContent || '',
-                contact: document.getElementById('contact').textContent || '',
-                objective: document.getElementById('objective').textContent || '',
-                education: Array.from(document.querySelectorAll('#education li')).map(item => item.textContent || ''),
-                experience: Array.from(document.querySelectorAll('#experience li')).map(item => item.textContent || ''),
-                skills: Array.from(document.querySelectorAll('#skills li')).map(item => item.textContent || '')
-            };
+    <div class="input-section">
+      <label for="educationInput">Education</label>
+      <textarea id="educationInput" rows="2" placeholder="Your degree and school"></textarea>
+    </div>
 
-            // Implement actual save logic here (e.g., saving to local storage or server)
-            console.log('Resume data saved:', resumeData);
+    <div class="input-section">
+      <label for="skillsInput">Skills</label>
+      <textarea id="skillsInput" rows="2" placeholder="Your skills"></textarea>
+    </div>
 
-            alert("Resume saved!");
-        }
+    <button id="generateResume">Generate Resume</button>
+    <button id="downloadResume">Download Resume as PDF</button>
+    <button id="shareResume">Share Resume Link</button>
 
-        // Initialize the functionality when DOM is loaded
-        document.addEventListener("DOMContentLoaded", () => {
-            makeSectionsEditable();
+    <h2>Your Resume</h2>
+    <div class="resume-display" id="resumeContent">
+      <h3 id="nameDisplay">Your Name</h3>
+      <p id="contactDisplay">Your Address | Phone Number | Email</p>
 
-            document.getElementById('saveButton').addEventListener('click', saveResume);
-        });
-    </script>
+      <section>
+        <h4>Professional Summary</h4>
+        <p id="summaryDisplay">A brief summary of your professional experience.</p>
+      </section>
+
+      <section>
+        <h4>Professional Experience</h4>
+        <p id="experienceDisplay">Your work experience will be displayed here.</p>
+      </section>
+
+      <section>
+        <h4>Education</h4>
+        <p id="educationDisplay">Your educational background will be displayed here.</p>
+      </section>
+
+      <section>
+        <h4>Skills</h4>
+        <p id="skillsDisplay">Your skills will be displayed here.</p>
+      </section>
+    </div>
+
+    <p id="shareLinkContainer"></p> <!-- For displaying the shareable link -->
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script> <!-- jsPDF library -->
+  <script src="script.js"></script>
 </body>
 </html>
+
+<script>document.getElementById("generateResume").addEventListener("click", function() {
+    // Get user input
+    const nameInput = document.getElementById("nameInput").value;
+    const contactInput = document.getElementById("contactInput").value;
+    const summaryInput = document.getElementById("summaryInput").value;
+    const experienceInput = document.getElementById("experienceInput").value;
+    const educationInput = document.getElementById("educationInput").value;
+    const skillsInput = document.getElementById("skillsInput").value;
+  
+    // Display the input in the resume section
+    document.getElementById("nameDisplay").textContent = nameInput ? nameInput : "Your Name";
+    document.getElementById("contactDisplay").textContent = contactInput ? contactInput : "Your Address | Phone Number | Email";
+    document.getElementById("summaryDisplay").textContent = summaryInput ? summaryInput : "A brief summary of your professional experience.";
+    document.getElementById("experienceDisplay").textContent = experienceInput ? experienceInput : "Your work experience will be displayed here.";
+    document.getElementById("educationDisplay").textContent = educationInput ? educationInput : "Your educational background will be displayed here.";
+    document.getElementById("skillsDisplay").textContent = skillsInput ? skillsInput : "Your skills will be displayed here.";
+  });
+  
+  document.getElementById("downloadResume").addEventListener("click", function() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+  
+    // Get the resume content
+    const name = document.getElementById("nameDisplay").textContent;
+    const contact = document.getElementById("contactDisplay").textContent;
+    const summary = document.getElementById("summaryDisplay").textContent;
+    const experience = document.getElementById("experienceDisplay").textContent;
+    const education = document.getElementById("educationDisplay").textContent;
+    const skills = document.getElementById("skillsDisplay").textContent;// Add text to the PDF
+    doc.setFontSize(22);
+    doc.text(name, 20, 20);
+    doc.setFontSize(12);
+    doc.text(contact, 20, 30);
+  
+    doc.text("Professional Summary", 20, 50);
+    doc.text(summary, 20, 60);
+  
+    doc.text("Professional Experience", 20, 80);
+    doc.text(experience, 20, 90);
+  
+    doc.text("Education", 20, 110);
+    doc.text(education, 20, 120);
+  
+    doc.text("Skills", 20, 140);
+    doc.text(skills, 20, 150);
+  
+    // Save the PDF
+    doc.save("resume.pdf");
+  });
+  
+  document.getElementById("shareResume").addEventListener("click", function() {
+    const name = document.getElementById("nameInput").value;
+    const contact = document.getElementById("contactInput").value;
+    const summary = document.getElementById("summaryInput").value;
+    const experience = document.getElementById("experienceInput").value;
+    const education = document.getElementById("educationInput").value;
+    const skills = document.getElementById("skillsInput").value;
+  
+    // Create a shareable URL with resume data
+    const baseUrl = window.location.href.split('?')[0];
+    const queryParams = new URLSearchParams({
+      name,
+      contact,
+      summary,
+      experience,
+      education,
+      skills
+    });
+  
+    const shareableLink = `${baseUrl}?${queryParams.toString()}`;
+    const shareLinkContainer = document.getElementById("shareLinkContainer");
+    shareLinkContainer.textContent = `Share this link: ${shareableLink}`;
+    shareLinkContainer.style.color = "blue";
+  });
+  
+  window.addEventListener('load', function() {
+    // Check if there's data in the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    if (urlParams.has('name')) {
+      document.getElementById("nameInput").value = urlParams.get('name');
+      document.getElementById("contactInput").value = urlParams.get('contact');
+      document.getElementById("summaryInput").value = urlParams.get('summary');
+      document.getElementById("experienceInput").value = urlParams.get('experience');
+      document.getElementById("educationInput").value = urlParams.get('education');
+      document.getElementById("skillsInput").value = urlParams.get('skills');
+  
+      // Trigger the "Generate Resume" button to update the resume display
+      document.getElementById("generateResume").click();
+    }
+  });
+  </script>
+  </body>
+  </html>
